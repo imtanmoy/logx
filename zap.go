@@ -14,7 +14,7 @@ func CustomLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) 
 	enc.AppendString("[" + level.CapitalString() + "]")
 }
 
-func NewZapLogger() (Logger, error) {
+func NewZapLogger() ILogger {
 	cfg := zap.Config{
 		Encoding:    "console",
 		OutputPaths: []string{"stderr"},
@@ -36,10 +36,10 @@ func NewZapLogger() (Logger, error) {
 
 	return &zapLogger{
 		sugaredLogger: &log,
-	}, nil
+	}
 }
 
-var _ Logger = (*zapLogger)(nil)
+var _ ILogger = (*zapLogger)(nil)
 
 type zapLogger struct {
 	sugaredLogger *zap.SugaredLogger
@@ -105,7 +105,7 @@ func (l *zapLogger) Panic(args ...interface{}) {
 	l.sugaredLogger.Fatal(args...)
 }
 
-func (l *zapLogger) WithFields(fields Fields) Logger {
+func (l *zapLogger) WithFields(fields Fields) ILogger {
 	var f = make([]interface{}, 0)
 	for k, v := range fields {
 		f = append(f, k)

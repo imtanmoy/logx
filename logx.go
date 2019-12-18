@@ -1,13 +1,13 @@
 package logx
 
 // A global variable so that log functions can be directly accessed
-var defaultLogger Logger
+var defaultLogger ILogger
 
 //Fields Type to pass when we want to call WithFields for structured logging
 type Fields map[string]interface{}
 
-//Logger is our contract for the logger
-type Logger interface {
+//ILogger is our contract for the logger
+type ILogger interface {
 	Error(args ...interface{})
 	Errorf(format string, args ...interface{})
 
@@ -30,70 +30,78 @@ type Logger interface {
 	Printf(format string, args ...interface{})
 	Println(args ...interface{})
 
-	WithFields(keyValues Fields) Logger
+	WithFields(keyValues Fields) ILogger
 }
 
-func initialize() error {
-	logger, err := NewZapLogger()
-	if err != nil {
-		return err
-	}
+func initialize() {
+	logger := NewZapLogger()
 	defaultLogger = logger
-	return nil
 }
 
 func init() {
-	_ = initialize()
-}
-
-func Debugf(format string, args ...interface{}) {
-	defaultLogger.Debugf(format, args...)
+	initialize()
 }
 
 func Debug(args ...interface{}) {
 	defaultLogger.Debug(args...)
 }
 
-func Infof(format string, args ...interface{}) {
-	defaultLogger.Infof(format, args...)
+func Debugf(format string, args ...interface{}) {
+	defaultLogger.Debugf(format, args...)
 }
 
 func Info(args ...interface{}) {
 	defaultLogger.Info(args...)
 }
 
-func Warnf(format string, args ...interface{}) {
-	defaultLogger.Warnf(format, args...)
+func Infof(format string, args ...interface{}) {
+	defaultLogger.Infof(format, args...)
 }
 
 func Warn(args ...interface{}) {
 	defaultLogger.Warn(args...)
 }
 
-func Errorf(format string, args ...interface{}) {
-	defaultLogger.Errorf(format, args...)
+func Warnf(format string, args ...interface{}) {
+	defaultLogger.Warnf(format, args...)
 }
 
 func Error(args ...interface{}) {
 	defaultLogger.Error(args...)
 }
 
-func Fatalf(format string, args ...interface{}) {
-	defaultLogger.Fatalf(format, args...)
+func Errorf(format string, args ...interface{}) {
+	defaultLogger.Errorf(format, args...)
 }
 
 func Fatal(args ...interface{}) {
 	defaultLogger.Fatal(args...)
 }
 
-func Panicf(format string, args ...interface{}) {
-	defaultLogger.Panicf(format, args...)
+func Fatalf(format string, args ...interface{}) {
+	defaultLogger.Fatalf(format, args...)
 }
 
 func Panic(args ...interface{}) {
 	defaultLogger.Panic(args...)
 }
 
-func WithFields(keyValues Fields) Logger {
+func Panicf(format string, args ...interface{}) {
+	defaultLogger.Panicf(format, args...)
+}
+
+func Print(args ...interface{}) {
+	defaultLogger.Info(args...)
+}
+
+func Printf(format string, args ...interface{}) {
+	defaultLogger.Infof(format, args...)
+}
+
+func Println(args ...interface{}) {
+	defaultLogger.Info(args...)
+}
+
+func WithFields(keyValues Fields) ILogger {
 	return defaultLogger.WithFields(keyValues)
 }
