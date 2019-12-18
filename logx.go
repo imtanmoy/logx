@@ -125,6 +125,5 @@ func WithFields(keyValues Fields) ILogger {
 
 // WithField returns a new logger instance which can Log a message at the given level with a key and a value
 func WithField(key string, value interface{}) ILogger {
-	keyValues := Fields{key: value}
-	return defaultLogger.WithFields(keyValues)
+	return defaultLogger.WithField(key, value)
 }

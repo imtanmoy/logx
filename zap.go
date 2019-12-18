@@ -130,3 +130,15 @@ func (l *zapLogger) WithFields(fields Fields) ILogger {
 	newLogger := l.sugaredLogger.With(f...)
 	return &zapLogger{newLogger}
 }
+
+// WithField returns a new logger instance which can Log a message at the given level with a key and a value
+func (l *zapLogger) WithField(key string, value interface{}) ILogger {
+	keyValues := Fields{key: value}
+	var f = make([]interface{}, 0)
+	for k, v := range keyValues {
+		f = append(f, k)
+		f = append(f, v)
+	}
+	newLogger := l.sugaredLogger.With(f...)
+	return &zapLogger{newLogger}
+}
