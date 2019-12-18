@@ -31,6 +31,7 @@ type ILogger interface {
 	Println(args ...interface{})
 
 	WithFields(keyValues Fields) ILogger
+	WithField(key string, value interface{}) ILogger
 }
 
 func initialize() {
@@ -119,5 +120,11 @@ func Println(args ...interface{}) {
 
 // WithFields returns a new logger instance which can Log a message at the given level with context key/value pairs
 func WithFields(keyValues Fields) ILogger {
+	return defaultLogger.WithFields(keyValues)
+}
+
+// WithField returns a new logger instance which can Log a message at the given level with a key and a value
+func WithField(key string, value interface{}) ILogger {
+	keyValues := Fields{key: value}
 	return defaultLogger.WithFields(keyValues)
 }
